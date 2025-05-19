@@ -37,7 +37,7 @@ def approximate_pca(dataloader: DataLoader, num_components: int, num_batches: in
 
     return ipca
 
-def encode(dataloader: DataLoader, num_batches: int, save=False):
+def encode(dataloader: DataLoader, num_batches=None, save=False):
 
     device = "cpu" #torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = ClinicalBERT().to(device)
@@ -76,7 +76,7 @@ def encode(dataloader: DataLoader, num_batches: int, save=False):
 
             pb.set_postfix(embeddings_saved = stacked_embeddings.shape[0])
 
-        if idx >= num_batches:
+        if num_batches and idx >= num_batches:
             break
 
     # Stack all embeddings
@@ -98,8 +98,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Fit PCA
-    print("Fitting PCA")
-    approximate_pca(get_dataloader(args.csv_path, batch_size=50, shuffle=True), num_components=50, num_batches=1000)
+    #print("Fitting PCA")
+    #approximate_pca(get_dataloader(args.csv_path, batch_size=50, shuffle=True), num_components=50, num_batches=1000) 
 
     # Encode
     print("Encoding")
